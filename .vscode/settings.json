@@ -1,0 +1,36 @@
+{
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/out/**": true,
+    "**/build/**": true,
+    "**/coverage/**": true,
+    "**/.cache/**": true,
+    "**/*.tsbuildinfo": true,
+    "**/firebase-debug.log": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/out": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/.cache": true,
+    "**/*.tsbuildinfo": true,
+    "**/firebase-debug.log": true
+  },
+  "files.exclude": {
+    "**/.next": true,
+    "**/out": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/.cache": true,
+    "**/*.tsbuildinfo": true,
+    "**/firebase-debug.log": true
+  },
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true,
+  "git.autofetch": false
+}
