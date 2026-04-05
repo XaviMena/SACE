@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --tamano-ui: 0.78rem;
   --color-fondo: #f6f7f8;
   --color-superficie: #ffffff;
   --color-superficie-secundaria: #f1f4f6;
@@ -44,6 +45,7 @@ body {
     linear-gradient(180deg, #fbfcfc 0%, var(--color-fondo) 100%);
   color: var(--color-texto);
   font-family: var(--font-texto), sans-serif;
+  font-size: var(--tamano-ui);
 }
 
 a {
@@ -74,6 +76,56 @@ textarea {
 
 .texto-suave {
   color: var(--color-texto-suave);
+}
+
+.sobrelinea-ui {
+  font-size: var(--tamano-ui);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.titulo-pagina {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.descripcion-pagina {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+}
+
+.titulo-seccion {
+  font-size: var(--tamano-ui);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.titulo-bloque {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.texto-cuerpo {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+}
+
+.texto-ayuda {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+  color: var(--color-texto-suave);
+}
+
+.numero-metrica {
+  font-size: var(--tamano-ui);
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .panel-lateral {
@@ -131,10 +183,57 @@ textarea {
   border: 1px solid transparent;
 }
 
+.nav-item-compacto {
+  min-height: 2.15rem;
+}
+
 .nav-item-activo {
   background: rgba(255, 255, 255, 0.94);
   border-color: rgba(10, 158, 189, 0.12);
   box-shadow: var(--shadow-suave);
+}
+
+.grupo-menu {
+  display: block;
+}
+
+.grupo-menu[open] .indicador-menu {
+  transform: rotate(45deg);
+}
+
+.resumen-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  cursor: pointer;
+  border-radius: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  font-size: var(--tamano-ui);
+  font-weight: 600;
+  color: var(--color-texto);
+  transition: background-color 180ms ease;
+}
+
+.resumen-menu:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.resumen-menu::-webkit-details-marker {
+  display: none;
+}
+
+.indicador-menu {
+  transition: transform 180ms ease;
+}
+
+.subnav-item {
+  border: 1px solid transparent;
+}
+
+.subnav-item-activo {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(10, 158, 189, 0.1);
 }
 
 .tarjeta-usuario {
@@ -146,6 +245,83 @@ textarea {
 .rejilla-datos {
   display: grid;
   gap: 1rem;
+}
+
+.tabla-editorial {
+  border-collapse: collapse;
+}
+
+.tabla-editorial thead th {
+  border-bottom: 1px solid var(--color-borde-suave);
+  padding: 0 0 1rem;
+  text-align: left;
+  font-size: var(--tamano-ui);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-texto-suave);
+}
+
+.tabla-editorial tbody td {
+  border-bottom: 1px solid var(--color-borde-suave);
+  padding: 1rem 0;
+  font-size: var(--tamano-ui);
+  vertical-align: top;
+  color: var(--color-texto);
+}
+
+.tabla-editorial tbody td p + p {
+  margin-top: 0.2rem;
+}
+
+.tabla-editorial thead th:not(:first-child),
+.tabla-editorial tbody td:not(:first-child) {
+  padding-left: 1rem;
+}
+
+.banda-estado {
+  border-top: 1px solid var(--color-borde-suave);
+  border-bottom: 1px solid var(--color-borde-suave);
+  padding: 0.95rem 0;
+}
+
+.estado-linea {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  font-size: var(--tamano-ui);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-texto-suave);
+  background: rgba(99, 114, 129, 0.08);
+}
+
+.estado-linea-ok {
+  color: var(--color-exito);
+  background: rgba(31, 122, 79, 0.08);
+}
+
+.estado-linea-alerta {
+  color: var(--color-alerta);
+  background: rgba(183, 121, 31, 0.1);
+}
+
+.barra-progreso {
+  overflow: hidden;
+  height: 0.7rem;
+  border-radius: 9999px;
+  background: rgba(215, 222, 227, 0.8);
+}
+
+.barra-progreso > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-acento), var(--color-secundario));
+  transition: width 220ms ease;
 }
 
 @media (min-width: 900px) {

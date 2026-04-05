@@ -1,4 +1,4 @@
-export type RolUsuario = "admin" | "docente" | "padre" | "estudiante";
+export type RolUsuario = "admin" | "docente" | "autoridad" | "dece" | "padre" | "estudiante";
 export type EstadoUsuario = "activo" | "pendiente_registro" | "bloqueado";
 
 export interface UsuarioApp {
@@ -6,6 +6,7 @@ export interface UsuarioApp {
   correo: string;
   rol: RolUsuario;
   estado: EstadoUsuario;
+  clave_acceso?: string | null;
   cedula: string;
   telefono: string;
   nombres: string;

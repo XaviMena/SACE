@@ -8,6 +8,7 @@ export const usuarioAdminSemilla: UsuarioApp = {
   correo: "xavymena@gmail.com",
   rol: "admin",
   estado: "activo",
+  clave_acceso: null,
   cedula: "0201305406",
   telefono: "0999999999",
   nombres: "Fernando Xavier",
@@ -16,6 +17,24 @@ export const usuarioAdminSemilla: UsuarioApp = {
   creado_en: marcaTiempo,
   ultimo_acceso: marcaTiempo,
 };
+
+export const usuariosSemilla: UsuarioApp[] = [
+  usuarioAdminSemilla,
+  {
+    uid: "solicitud-0201114246",
+    correo: "maclovia.aguilar@educacion.gob.ec",
+    rol: "docente",
+    estado: "pendiente_registro",
+    clave_acceso: null,
+    cedula: "0201114246",
+    telefono: "0987654321",
+    nombres: "MACLOVIA ISABEL",
+    apellidos: "AGUILAR BARRAGAN",
+    persona_id_referencia: "0201114246",
+    creado_en: marcaTiempo,
+    ultimo_acceso: marcaTiempo,
+  },
+];
 
 export const docentesSemilla: Docente[] = [
   {

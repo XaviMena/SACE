@@ -1,47 +1,112 @@
 "use client";
 
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import type { Docente } from "@/types/docentes";
+import { Boton } from "@/components/ui/boton";
+import type { DocenteConUsuario } from "@/types/administracion";
+import type { RolUsuario } from "@/types/auth";
 
-const columnas: ColumnDef<Docente>[] = [
-  {
-    accessorKey: "nombres_apellidos",
-    header: "Docente",
-  },
-  {
-    accessorKey: "cedula",
-    header: "Cédula",
-  },
-  {
-    accessorKey: "correo",
-    header: "Correo",
-  },
-  {
-    accessorKey: "telefono",
-    header: "Teléfono",
-  },
-  {
-    accessorKey: "estado_registro",
-    header: "Estado",
-    cell: ({ row }) => {
-      const valor = row.original.estado_registro;
-      const mapaColor =
-        valor === "activo"
-          ? "bg-[rgba(31,122,79,0.10)] text-[var(--color-exito)]"
-          : valor === "bloqueado"
-            ? "bg-[rgba(181,66,45,0.10)] text-[var(--color-peligro)]"
-            : "bg-[rgba(183,121,31,0.12)] text-[var(--color-alerta)]";
+const ETIQUETAS_ROL: Record<Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">, string> = {
+  admin: "Administrador",
+  docente: "Docente",
+  autoridad: "Autoridad",
+  dece: "DECE",
+};
 
-      return (
-        <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold capitalize ${mapaColor}`}>
-          {valor.replace("_", " ")}
-        </span>
-      );
+export function TablaDocentes({
+  datos,
+  esAdmin,
+  docenteRolPendiente,
+  rolesSeleccionados,
+  onSeleccionarRol,
+  onCambiarRol,
+}: {
+  datos: DocenteConUsuario[];
+  esAdmin: boolean;
+  docenteRolPendiente: string | null;
+  rolesSeleccionados: Partial<Record<string, Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">>>;
+  onSeleccionarRol: (docenteId: string, rol: Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">) => void;
+  onCambiarRol: (docente: DocenteConUsuario, rol: Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">) => void;
+}) {
+  const columnas: ColumnDef<DocenteConUsuario>[] = [
+    {
+      accessorKey: "nombres_apellidos",
+      header: "Docente",
     },
-  },
-];
+    {
+      accessorKey: "cedula",
+      header: "Cédula",
+    },
+    {
+      accessorKey: "correo",
+      header: "Correo",
+    },
+    {
+      accessorKey: "rol_usuario",
+      header: "Rol de acceso",
+      cell: ({ row }) => {
+        const docente = row.original;
+        const rolActual = docente.rol_usuario ?? "docente";
 
-export function TablaDocentes({ datos }: { datos: Docente[] }) {
+        const estilo =
+          rolActual === "admin"
+            ? "bg-[rgba(27,97,118,0.10)] text-[var(--color-acento)]"
+            : rolActual === "autoridad"
+              ? "bg-[rgba(142,97,25,0.14)] text-[var(--color-alerta)]"
+              : rolActual === "dece"
+                ? "bg-[rgba(128,74,182,0.12)] text-[rgb(112,64,160)]"
+                : "bg-[rgba(31,122,79,0.10)] text-[var(--color-exito)]";
+
+        return (
+          <span className={`inline-flex rounded-full px-3 py-1 text-[var(--tamano-ui)] font-medium capitalize ${estilo}`}>
+            {ETIQUETAS_ROL[rolActual]}
+          </span>
+        );
+      },
+    },
+  ];
+
+  if (esAdmin) {
+    columnas.push({
+      id: "acciones",
+      header: "Acción",
+      cell: ({ row }) => {
+        const docente = row.original;
+        const cambiando = docenteRolPendiente === docente.docente_id;
+        const rolSeleccionado = rolesSeleccionados[docente.docente_id] ?? docente.rol_usuario ?? "docente";
+        const rolActual = docente.rol_usuario ?? "docente";
+
+        return (
+          <div className="flex items-center gap-2">
+            <select
+              className="min-w-[9.5rem] appearance-none bg-transparent px-0 py-2 text-[var(--tamano-ui)] font-medium text-[var(--color-texto)] outline-none transition hover:text-[var(--color-acento)] focus:text-[var(--color-acento)]"
+              value={rolSeleccionado}
+              onChange={(evento) =>
+                onSeleccionarRol(
+                  docente.docente_id,
+                  evento.target.value as Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">,
+                )
+              }
+              disabled={cambiando}
+            >
+              <option value="docente">Docente</option>
+              <option value="autoridad">Autoridad</option>
+              <option value="dece">DECE</option>
+              <option value="admin">Administrador</option>
+            </select>
+            <Boton
+              type="button"
+              variante="fantasma"
+              onClick={() => onCambiarRol(docente, rolSeleccionado)}
+              disabled={cambiando || rolSeleccionado === rolActual}
+            >
+              {cambiando ? "Guardando..." : "Guardar"}
+            </Boton>
+          </div>
+        );
+      },
+    });
+  }
+
   // TanStack Table expone una API conocida como incompatible con React Compiler.
   // La usamos aquí de forma controlada en un componente de tabla no memoizado.
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -61,7 +126,7 @@ export function TablaDocentes({ datos }: { datos: Docente[] }) {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-texto-suave)]"
+                    className="px-4 py-4 text-left text-[var(--tamano-ui)] font-medium text-[var(--color-texto-suave)]"
                   >
                     {header.isPlaceholder
                       ? null
@@ -75,7 +140,7 @@ export function TablaDocentes({ datos }: { datos: Docente[] }) {
             {tabla.getRowModel().rows.map((row) => (
               <tr key={row.id} className="border-t border-[var(--color-borde-suave)]">
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-4 py-4 text-sm text-[var(--color-texto)]">
+                  <td key={cell.id} className="px-4 py-4 text-[var(--tamano-ui)] text-[var(--color-texto)]">
                     {cell.column.columnDef.cell
                       ? flexRender(cell.column.columnDef.cell, cell.getContext())
                       : String(cell.getValue() ?? "")}

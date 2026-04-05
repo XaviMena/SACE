@@ -144,6 +144,45 @@ export async function crear_docente(datos: ValoresFormularioDocente) {
   return Promise.resolve(nuevoDocente);
 }
 
+export async function actualizar_estado_docente(docenteId: string, estado: Docente["estado_registro"], usuarioUid?: string | null) {
+  if (!firebaseConfigurado()) {
+    baseDocentes = baseDocentes.map((docente) =>
+      docente.docente_id === docenteId
+        ? {
+            ...docente,
+            estado_registro: estado,
+            usuario_uid: usuarioUid ?? docente.usuario_uid,
+          }
+        : docente,
+    );
+
+    return baseDocentes.find((docente) => docente.docente_id === docenteId) ?? null;
+  }
+
+  const firebase = obtenerFirebaseBase();
+
+  if (!firebase) {
+    return null;
+  }
+
+  const referencia = doc(firebase.db, "docentes", docenteId);
+  const instantanea = await getDoc(referencia);
+
+  if (!instantanea.exists()) {
+    return null;
+  }
+
+  const docente = instantanea.data() as Docente;
+  const actualizado = {
+    ...docente,
+    estado_registro: estado,
+    usuario_uid: usuarioUid ?? docente.usuario_uid,
+  } satisfies Docente;
+
+  await setDoc(referencia, actualizado);
+  return actualizado;
+}
+
 async function validar_unicidad_docente(docente: Docente) {
   const firebase = obtenerFirebaseBase();
 

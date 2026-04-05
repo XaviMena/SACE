@@ -1,0 +1,29 @@
+[
+  {
+    "uid": "admin-0201305406",
+    "correo": "xavymena@gmail.com",
+    "rol": "admin",
+    "estado": "activo",
+    "cedula": "0201305406",
+    "telefono": "0999999999",
+    "nombres": "Fernando Xavier",
+    "apellidos": "Mena Paredes",
+    "persona_id_referencia": "0201305406",
+    "creado_en": "2026-04-05T21:32:03.061Z",
+    "ultimo_acceso": "2026-04-05T21:32:03.061Z"
+  },
+  {
+    "uid": "solicitud-docente-0201590916",
+    "correo": "miguel.amangandi@educacion.gob.ec",
+    "rol": "docente",
+    "estado": "activo",
+    "cedula": "0201590916",
+    "telefono": "",
+    "nombres": "AMANGANDI TAMAMI MIGUEL ANGEL",
+    "apellidos": "",
+    "persona_id_referencia": "0201590916",
+    "creado_en": "2026-04-05T21:32:03.112Z",
+    "ultimo_acceso": "2026-04-05T21:50:01.951Z",
+    "clave_acceso": "Miguel"
+  }
+]
