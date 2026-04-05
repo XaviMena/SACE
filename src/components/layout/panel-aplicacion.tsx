@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { BookOpen, LayoutGrid, LogOut, ShieldCheck, Users } from "lucide-react";
+import { GraduationCap, LayoutGrid, LogOut, ShieldCheck, Users } from "lucide-react";
 import { Boton } from "@/components/ui/boton";
 import { cerrar_sesion } from "@/lib/auth/acciones";
 import { useSesion } from "@/lib/auth/proveedor-sesion";
@@ -89,24 +89,25 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen md:grid md:grid-cols-[300px_minmax(0,1fr)]">
-      <aside className="panel-lateral flex flex-col gap-8 px-6 py-8">
-        <div className="space-y-3">
-          <div className="inline-flex w-fit max-w-full items-center gap-3 rounded-full border border-[rgba(22,93,115,0.16)] bg-white/80 px-4 py-2">
+    <div className="min-h-screen md:grid md:grid-cols-[280px_minmax(0,1fr)]">
+      <aside className="panel-lateral flex flex-col gap-7 px-5 py-5 md:px-6 md:py-6">
+        <div className="space-y-4">
+          <div className="inline-flex w-fit max-w-full items-center gap-2.5 rounded-full border border-[rgba(87,125,138,0.14)] bg-white/82 px-3.5 py-2">
             <ShieldCheck className="size-4 text-[var(--color-acento)]" />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-acento)]">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--color-acento)]">
               Control Escolar
             </span>
           </div>
-          <div>
-            <p className="titular-editorial text-4xl font-medium">SACE</p>
-            <p className="mt-2 max-w-[18rem] text-sm leading-6 text-[var(--color-texto)]">
+
+          <div className="space-y-2">
+            <p className="titular-editorial text-[2.9rem] leading-none font-extrabold tracking-[-0.055em]">SACE</p>
+            <p className="max-w-[13rem] text-[13px] leading-6 text-[var(--color-secundario)]">
               Sistema Automatizado de Gestión Escolar
             </p>
           </div>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1.5">
           {navegacion.map((item) => {
             const Activo = item.icono;
             const seleccionada = pathname.startsWith(item.href);
@@ -115,10 +116,10 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition",
+                  "nav-item flex items-center gap-3 rounded-[1.1rem] px-4 py-3 text-sm font-medium transition",
                   seleccionada
-                    ? "bg-white text-[var(--color-texto)] shadow-[0_12px_24px_rgba(22,93,115,0.08)]"
-                    : "text-[var(--color-texto-suave)] hover:bg-white/70 hover:text-[var(--color-texto)]",
+                    ? "nav-item-activo text-[var(--color-texto)]"
+                    : "text-[var(--color-texto-suave)] hover:bg-white/65 hover:text-[var(--color-texto)]",
                 )}
               >
                 <Activo className="size-4" />
@@ -128,21 +129,26 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="mt-auto superficie rounded-[1.5rem] p-5">
+        <div className="mt-auto tarjeta-usuario rounded-[1.4rem] p-4.5">
           <div className="flex items-start gap-3">
-            <div className="mt-1 rounded-full bg-[rgba(22,93,115,0.1)] p-2 text-[var(--color-acento)]">
-              <BookOpen className="size-4" />
+            <div className="mt-1 rounded-full bg-[rgba(27,97,118,0.1)] p-2.5 text-[var(--color-acento)]">
+              <GraduationCap className="size-4" />
             </div>
             <div className="min-w-0 space-y-1">
-              <p className="break-words text-sm font-semibold leading-5">
+              <p className="break-words text-sm font-semibold leading-5 text-[var(--color-texto)]">
                 {usuario ? `${usuario.nombres} ${usuario.apellidos}` : "Sin sesión"}
               </p>
-              <p className="break-all text-[13px] leading-5 texto-suave">
+              <p className="break-all text-[12px] leading-5 texto-suave">
                 {usuario?.correo ?? "Sin correo configurado"}
               </p>
             </div>
           </div>
-          <Boton className="mt-5 w-full" variante="secundaria" type="button" onClick={cerrarSesionActual}>
+          <Boton
+            className="mt-4 w-full rounded-[1rem] border-[rgba(215,222,227,0.9)] bg-white/92 py-2.5"
+            variante="secundaria"
+            type="button"
+            onClick={cerrarSesionActual}
+          >
             <LogOut className="mr-2 size-4" />
             Cerrar sesión
           </Boton>

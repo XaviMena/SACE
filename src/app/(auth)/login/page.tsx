@@ -1,42 +1,35 @@
 import { FormularioAcceso } from "@/components/formularios/formulario-acceso";
 import { obtener_estado_firebase } from "@/lib/firebase/config";
+import { GraduationCap } from "lucide-react";
 
 export default function PaginaLogin() {
   const firebase = obtener_estado_firebase();
-  const descripcionAcceso = firebase.configurado
-    ? "Acceso con correo institucional."
-    : "Acceso con correo institucional.";
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl items-center px-6 py-12">
-      <section className="grid w-full gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-8 rounded-[2rem] border border-[var(--color-borde-suave)] bg-[rgba(255,253,248,0.82)] p-8 shadow-[0_22px_50px_rgba(28,38,55,0.07)]">
-          <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-acento)]">
-              Acceso institucional
+    <main className="fondo-login mx-auto flex min-h-screen w-full items-center justify-center px-6 py-10">
+      <section className="w-full max-w-[28rem]">
+        <div className="space-y-8 text-center">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-[1.4rem] bg-[var(--color-superficie-secundaria)] shadow-[0_10px_26px_rgba(20,34,46,0.05)]">
+            <GraduationCap className="size-8 text-[var(--color-secundario)]" />
+          </div>
+
+          <div className="space-y-3">
+            <p className="titular-editorial text-6xl leading-none font-extrabold tracking-[-0.055em] text-[var(--color-texto)] sm:text-7xl">
+              SACE
             </p>
-            <h1 className="titular-editorial text-5xl leading-none font-medium text-[var(--color-texto)]">
+            <h1 className="text-[13px] font-medium tracking-[0.18em] text-[var(--color-secundario)] uppercase">
               Sistema Automatizado de Gestión Escolar
             </h1>
-            <p className="max-w-2xl text-base leading-8 texto-suave">{descripcionAcceso}</p>
-          </div>
-        </div>
-
-        <aside className="superficie rounded-[2rem] p-8">
-          <div className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-acento)]">
-              Ingresar
-            </p>
-            <h2 className="titular-editorial text-3xl leading-none font-medium">Acceso al panel</h2>
-            <p className="text-sm leading-6 texto-suave">
-              {firebase.configurado ? "Te enviaremos un enlace de acceso." : `Modo ${firebase.proyecto ? firebase.proyecto : "local"}.`}
-            </p>
           </div>
 
-          <div className="mt-8">
+          <div className="panel-auth rounded-[1.8rem] px-6 py-6 text-left sm:px-7">
             <FormularioAcceso />
           </div>
-        </aside>
+
+          <p className="text-[12px] text-[var(--color-neutral)]">
+            {firebase.configurado ? "Conectado" : "Modo local"}
+          </p>
+        </div>
       </section>
     </main>
   );
