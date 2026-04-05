@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+python3 "/Users/xaviermena/Desktop/Programas/SACE/scripts/hacer_commit.py" "$@"
