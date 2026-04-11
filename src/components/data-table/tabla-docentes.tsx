@@ -11,6 +11,7 @@ const ETIQUETAS_ROL: Record<Extract<RolUsuario, "admin" | "docente" | "autoridad
   autoridad: "Autoridad",
   dece: "DECE",
 };
+const CEDULA_ADMIN_RESERVADO = "0201305406";
 
 export function TablaDocentes({
   datos,
@@ -74,6 +75,8 @@ export function TablaDocentes({
         const cambiando = docenteRolPendiente === docente.docente_id;
         const rolSeleccionado = rolesSeleccionados[docente.docente_id] ?? docente.rol_usuario ?? "docente";
         const rolActual = docente.rol_usuario ?? "docente";
+        const esAdminReservado =
+          docente.cedula === CEDULA_ADMIN_RESERVADO || docente.docente_id === CEDULA_ADMIN_RESERVADO;
 
         return (
           <div className="flex items-center gap-2">
@@ -86,7 +89,7 @@ export function TablaDocentes({
                   evento.target.value as Extract<RolUsuario, "admin" | "docente" | "autoridad" | "dece">,
                 )
               }
-              disabled={cambiando}
+              disabled={cambiando || esAdminReservado}
             >
               <option value="docente">Docente</option>
               <option value="autoridad">Autoridad</option>
@@ -97,7 +100,7 @@ export function TablaDocentes({
               type="button"
               variante="fantasma"
               onClick={() => onCambiarRol(docente, rolSeleccionado)}
-              disabled={cambiando || rolSeleccionado === rolActual}
+              disabled={cambiando || rolSeleccionado === rolActual || esAdminReservado}
             >
               {cambiando ? "Guardando..." : "Guardar"}
             </Boton>

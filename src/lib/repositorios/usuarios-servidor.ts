@@ -19,6 +19,33 @@ const RUTA_DISTRIBUTIVO_DB = "/Users/xaviermena/Desktop/Programas/distributivo/D
 const RUTA_USUARIOS_LOCALES = `${process.cwd()}/.data/usuarios-servidor.json`;
 const CONTRASENA_ADMIN_CREDENCIALES = "Admin123";
 const TIEMPO_ESPERA_FIREBASE_MS = 4000;
+const CEDULA_ADMIN_RESERVADO = "0201305406";
+
+function es_admin_reservado(valor?: string | null) {
+  if (!valor) {
+    return false;
+  }
+
+  return variantes_cedula(valor).includes(CEDULA_ADMIN_RESERVADO);
+}
+
+function aplicar_reglas_admin_reservado(usuario: UsuarioApp) {
+  if (
+    es_admin_reservado(usuario.cedula) ||
+    es_admin_reservado(usuario.persona_id_referencia) ||
+    usuario.uid === usuarioAdminSemilla.uid
+  ) {
+    return {
+      ...usuario,
+      rol: "admin",
+      estado: "activo",
+      cedula: CEDULA_ADMIN_RESERVADO,
+      persona_id_referencia: CEDULA_ADMIN_RESERVADO,
+    } satisfies UsuarioApp;
+  }
+
+  return usuario;
+}
 
 function obtener_clave_por_defecto_usuario(usuario: UsuarioApp) {
   if (usuario.rol === "admin") {
@@ -208,7 +235,7 @@ function fusionar_usuarios_locales(...colecciones: UsuarioApp[][]) {
 
   for (const coleccion of colecciones) {
     for (const usuario of coleccion) {
-      porUid.set(usuario.uid, usuario);
+      porUid.set(usuario.uid, aplicar_reglas_admin_reservado(usuario));
     }
   }
 
@@ -270,6 +297,11 @@ async function actualizar_rol_usuario_local_servidor(
   await persistir_usuarios_locales_servidor(usuariosLocales.map((usuario) => {
     if (usuario.uid !== uid) {
       return usuario;
+    }
+
+    if (es_admin_reservado(usuario.cedula) || es_admin_reservado(usuario.persona_id_referencia) || uid === usuarioAdminSemilla.uid) {
+      actualizado = aplicar_reglas_admin_reservado(usuario);
+      return actualizado;
     }
 
     actualizado = {
@@ -695,6 +727,17 @@ export async function actualizar_rol_docente_servidor(
 
   if (!usuario) {
     throw new Error("Este docente todavía no tiene un acceso vinculado.");
+  }
+
+  if (
+    rol !== "admin" &&
+    (es_admin_reservado(docente.cedula) ||
+      es_admin_reservado(docente.docente_id) ||
+      es_admin_reservado(usuario.cedula) ||
+      es_admin_reservado(usuario.persona_id_referencia) ||
+      usuario.uid === usuarioAdminSemilla.uid)
+  ) {
+    throw new Error("El administrador principal debe conservar ese rol.");
   }
 
   const firebase = obtenerFirebaseAdmin();
