@@ -71,7 +71,7 @@ export function ModuloDashboard() {
     return (
       <div className="space-y-8">
         <div className="superficie rounded-[1.75rem] p-6">
-          <p className="texto-cuerpo texto-suave">Cargando resumen y distributivo sin traer datos innecesarios.</p>
+          <p className="texto-cuerpo texto-suave">Cargando información del panel.</p>
         </div>
       </div>
     );
@@ -136,7 +136,6 @@ export function ModuloDashboard() {
                 Resumen administrativo
               </p>
               <div className="mt-4 space-y-2">
-                <p className="texto-ayuda">Asignaciones del periodo: {resumen.asignaciones}</p>
                 <p className="texto-ayuda">Solicitudes pendientes: {resumen.solicitudes_pendientes}</p>
                 <p className="texto-ayuda">Rol visible: admin</p>
               </div>

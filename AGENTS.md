@@ -38,4 +38,5 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Mensajes para usuario
 - Los textos visibles para usuarios finales deben sonar institucionales, claros y naturales; no mostrar detalles técnicos, nombres de servicios, estados internos, fuentes de datos ni mensajes pensados para desarrollo.
+- Los mensajes de carga, vacío, éxito o error no deben explicar decisiones de implementación ni criterios técnicos internos como optimización, consultas, backend, sincronización o estructura de datos.
 - Solo mostrar mensajes técnicos o de diagnóstico cuando se esté realizando debug de forma explícita o en vistas internas de administración técnica.
