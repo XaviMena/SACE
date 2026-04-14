@@ -1,32 +1,49 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronDown, Database, GraduationCap, KeyRound, LayoutGrid, LogOut, ShieldCheck, UserCheck, Users } from "lucide-react";
+import { ChevronDown, GraduationCap, LogOut, ShieldCheck } from "lucide-react";
 import { Boton } from "@/components/ui/boton";
 import { cerrar_sesion } from "@/lib/auth/acciones";
 import { useSesion } from "@/lib/auth/proveedor-sesion";
 import { cn } from "@/lib/utils/cn";
-
-const navegacion = [
-  { href: "/dashboard", etiqueta: "Dashboard", icono: LayoutGrid },
-];
-
-const navegacionConfiguracion = [
-  { href: "/configuracion/clave", etiqueta: "Cambiar contraseña", icono: KeyRound, soloAdmin: false },
-  { href: "/docentes", etiqueta: "Cambio de rol", icono: Users, soloAdmin: true },
-  { href: "/administracion/aprobaciones", etiqueta: "Aprobaciones", icono: UserCheck, soloAdmin: true },
-  { href: "/administracion/importacion", etiqueta: "Importación", icono: Database, soloAdmin: true },
-];
+import {
+  GRUPOS_MENU_PANEL,
+  ITEMS_MENU_PANEL,
+  item_menu_visible,
+  ruta_esta_activa,
+  type GrupoMenuPanel,
+} from "@/components/layout/menu-panel";
 
 export function PanelAplicacion({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { usuario, cargando, puedeAccederPanel, motivoBloqueo } = useSesion();
-  const esAdmin = usuario?.rol === "admin";
-  const navegacionVisible = navegacion;
-  const [configuracionAbierta, setConfiguracionAbierta] = useState(false);
+  const rolUsuario = usuario?.rol ?? null;
+
+  const dashboard = useMemo(
+    () => ITEMS_MENU_PANEL.find((item) => item.grupo === "dashboard" && item_menu_visible(item, rolUsuario)) ?? null,
+    [rolUsuario],
+  );
+
+  const gruposVisibles = useMemo(
+    () =>
+      GRUPOS_MENU_PANEL.map((grupo) => ({
+        ...grupo,
+        items: ITEMS_MENU_PANEL.filter(
+          (item) => item.grupo === grupo.id && !item.esPersonal && item_menu_visible(item, rolUsuario),
+        ),
+      })).filter((grupo) => grupo.items.length > 0),
+    [rolUsuario],
+  );
+
+  const itemsPersonales = useMemo(
+    () => ITEMS_MENU_PANEL.filter((item) => item.esPersonal && item_menu_visible(item, rolUsuario)),
+    [rolUsuario],
+  );
+
+  const [gruposAbiertos, setGruposAbiertos] = useState<Partial<Record<GrupoMenuPanel, boolean>>>({});
 
   useEffect(() => {
     if (!cargando && !puedeAccederPanel) {
@@ -38,6 +55,11 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
     await cerrar_sesion();
     window.location.assign("/login");
   };
+
+  const DashboardIcono = dashboard?.icono;
+
+  const clasesItemMenu =
+    "flex items-center gap-2.5 rounded-[0.95rem] px-3 py-2 text-[var(--tamano-ui)] font-medium transition";
 
   if (cargando) {
     return (
@@ -99,8 +121,8 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[228px_minmax(0,1fr)]">
-      <aside className="panel-lateral flex flex-col gap-5 px-4 py-4 md:sticky md:top-0 md:h-screen md:px-4 md:py-5">
-        <div className="space-y-5">
+      <aside className="panel-lateral flex flex-col gap-5 px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-hidden md:px-4 md:py-5">
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
           <div className="space-y-3">
             <div className="inline-flex w-fit max-w-full items-center gap-2 px-1 py-1">
               <ShieldCheck className="size-4 text-[var(--color-acento)]" />
@@ -108,71 +130,142 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <nav className="space-y-0.5">
-            {navegacionVisible.map((item) => {
-              const Activo = item.icono;
-              const seleccionada = pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-2.5 rounded-[0.95rem] px-3 py-2 text-[var(--tamano-ui)] font-medium transition",
-                    seleccionada
-                      ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
-                      : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
-                  )}
-                >
-                  <Activo className="size-3.5" />
-                  <span className="truncate">{item.etiqueta}</span>
-                </Link>
-              );
-            })}
-            </nav>
+          <div className="space-y-4">
+            {dashboard && dashboard.href ? (
+              <nav className="space-y-0.5">
+                {DashboardIcono ? (
+                  <Link
+                    key={dashboard.href}
+                    href={dashboard.href}
+                    className={cn(
+                      clasesItemMenu,
+                      ruta_esta_activa(pathname, dashboard.href)
+                        ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
+                        : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                    )}
+                  >
+                    <DashboardIcono className="size-3.5" />
+                    <span className="truncate">{dashboard.etiqueta}</span>
+                  </Link>
+                ) : null}
+              </nav>
+            ) : null}
 
-            <button
-              type="button"
-              className="flex w-full items-center justify-between rounded-[0.95rem] px-3 pt-3 pb-2 text-left text-[var(--tamano-ui)] font-medium text-[var(--color-texto-suave)] transition hover:text-[var(--color-texto)]"
-              onClick={() => setConfiguracionAbierta((actual) => !actual)}
-              aria-expanded={configuracionAbierta}
-              aria-controls="menu-configuracion"
-            >
-              <span>Configuración</span>
-              <ChevronDown
-                className={cn(
-                  "size-4 transition-transform",
-                  configuracionAbierta ? "rotate-180" : "rotate-0",
-                )}
-              />
-            </button>
+            {gruposVisibles.length ? (
+              <div className="space-y-2">
+                {gruposVisibles.map((grupo) => {
+                  const grupoActivo = grupo.items.some((item) => ruta_esta_activa(pathname, item.href));
+                  const abierta = gruposAbiertos[grupo.id] ?? grupoActivo;
 
-            {configuracionAbierta ? (
-              <nav id="menu-configuracion" className="space-y-0.5">
-                {navegacionConfiguracion.map((item) => {
-                  if (item.soloAdmin && !esAdmin) {
-                    return null;
-                  }
-
-                  const Activo = item.icono;
-                  const seleccionada = pathname.startsWith(item.href);
                   return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-2.5 rounded-[0.95rem] px-3 py-2 text-[var(--tamano-ui)] font-medium transition",
-                        seleccionada
-                          ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
-                          : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
-                      )}
-                    >
-                      <Activo className="size-3.5" />
-                      <span className="truncate">{item.etiqueta}</span>
-                    </Link>
+                    <div key={grupo.id} className="space-y-1">
+                      <button
+                        type="button"
+                        className={cn(
+                          "flex w-full items-center justify-between rounded-[0.95rem] px-3 pt-3 pb-2 text-left text-[var(--tamano-ui)] font-medium transition",
+                          grupoActivo
+                            ? "text-[var(--color-texto)]"
+                            : "text-[var(--color-texto-suave)] hover:text-[var(--color-texto)]",
+                        )}
+                        onClick={() =>
+                          setGruposAbiertos((actual) => ({
+                            ...actual,
+                            [grupo.id]: !abierta,
+                          }))
+                        }
+                        aria-expanded={abierta}
+                        aria-controls={`menu-${grupo.id}`}
+                      >
+                        <span>{grupo.etiqueta}</span>
+                        <ChevronDown
+                          className={cn(
+                            "size-4 transition-transform",
+                            abierta ? "rotate-180" : "rotate-0",
+                          )}
+                        />
+                      </button>
+
+                      {abierta ? (
+                        <nav id={`menu-${grupo.id}`} className="space-y-0.5">
+                          {grupo.items.map((item) => {
+                            const Activo = item.icono;
+                            const seleccionada = ruta_esta_activa(pathname, item.href);
+                            const contenido = (
+                              <>
+                                <Activo className="size-3.5" />
+                                <span className="truncate">{item.etiqueta}</span>
+                              </>
+                            );
+
+                            if (!item.href) {
+                              return (
+                                <div
+                                  key={`${grupo.id}-${item.etiqueta}`}
+                                  className={cn(
+                                    clasesItemMenu,
+                                    "cursor-default text-[var(--color-texto-suave)] opacity-70",
+                                  )}
+                                  aria-disabled="true"
+                                >
+                                  {contenido}
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className={cn(
+                                  clasesItemMenu,
+                                  seleccionada
+                                    ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
+                                    : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                                )}
+                              >
+                                {contenido}
+                              </Link>
+                            );
+                          })}
+                        </nav>
+                      ) : null}
+                    </div>
                   );
                 })}
-              </nav>
+              </div>
+            ) : null}
+
+            {itemsPersonales.length ? (
+              <div className="space-y-2 border-t border-[var(--color-borde-suave)] pt-4">
+                <p className="px-3 text-[var(--tamano-ui)] font-medium text-[var(--color-texto-suave)]">
+                  Mi cuenta
+                </p>
+                <nav className="space-y-0.5">
+                  {itemsPersonales.map((item) => {
+                    if (!item.href) {
+                      return null;
+                    }
+
+                    const Activo = item.icono;
+                    const seleccionada = ruta_esta_activa(pathname, item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                          clasesItemMenu,
+                          seleccionada
+                            ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
+                            : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                        )}
+                      >
+                        <Activo className="size-3.5" />
+                        <span className="truncate">{item.etiqueta}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
             ) : null}
           </div>
         </div>
