@@ -258,9 +258,9 @@ export function PaginaImportacionCliente() {
   }
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-5 border-b border-[var(--color-borde-suave)] pb-6">
-        <div className="space-y-2">
+    <div className="space-y-4">
+      <section className="panel-seccion-compacta">
+        <div className="space-y-1">
           <p className="titulo-seccion text-[var(--color-acento)]">Importación institucional</p>
           <h1 className="titular-editorial titulo-pagina text-[var(--color-texto)]">
             Carga el archivo y sigue el proceso paso a paso.
@@ -270,11 +270,11 @@ export function PaginaImportacionCliente() {
           </p>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="space-y-4 rounded-[1.75rem] border border-[var(--color-borde)] bg-[rgba(255,255,255,0.84)] p-5 shadow-[0_16px_40px_rgba(12,37,46,0.05)]">
+        <div className="grid gap-2.5 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="tarjeta-operativa space-y-2.5">
             <div className="flex items-start gap-3">
-              <div className="rounded-2xl bg-[rgba(10,158,189,0.1)] p-3 text-[var(--color-acento)]">
-                <FileUp className="size-5" />
+              <div className="rounded-[0.5rem] bg-[rgba(10,158,189,0.1)] p-2 text-[var(--color-acento)]">
+                <FileUp className="size-4" />
               </div>
               <div className="space-y-1">
                 <p className="titulo-seccion text-[var(--color-texto)]">Carga del archivo</p>
@@ -284,9 +284,9 @@ export function PaginaImportacionCliente() {
               </div>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div className="space-y-3">
-                <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-dashed border-[var(--color-borde)] bg-[var(--color-superficie)] px-4 py-5 text-[var(--tamano-ui)] font-semibold text-[var(--color-texto)] transition hover:bg-[var(--color-superficie-secundaria)]">
+            <div className="grid gap-2.5 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div className="space-y-2">
+                <label className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-[0.5rem] border border-dashed border-[var(--color-borde)] bg-[var(--color-superficie)] px-3 py-3 text-[var(--tamano-ui)] font-semibold text-[var(--color-texto)] transition hover:bg-[var(--color-superficie-secundaria)]">
                   <Upload className="size-4" />
                   {archivo ? "Cambiar archivo" : "Seleccionar archivo"}
                   <input
@@ -298,7 +298,7 @@ export function PaginaImportacionCliente() {
                   />
                 </label>
 
-                <div className="rounded-2xl border border-[var(--color-borde-suave)] bg-[rgba(248,250,251,0.8)] px-4 py-3">
+                <div className="tarjeta-operativa-suave">
                   <p className="sobrelinea-ui text-[var(--color-texto-suave)]">Archivo seleccionado</p>
                   <p className="mt-1 titulo-bloque text-[var(--color-texto)]">
                     {archivo?.name ?? "Aún no se ha seleccionado ningún archivo."}
@@ -315,7 +315,7 @@ export function PaginaImportacionCliente() {
                 type="button"
                 onClick={iniciarImportacion}
                 disabled={estaPendiente || !archivo || estado?.estado === "ejecutando"}
-                className="min-w-52"
+                className="min-w-40"
               >
                 <Database className="mr-2 size-4" />
                 {estado?.estado === "ejecutando"
@@ -327,18 +327,18 @@ export function PaginaImportacionCliente() {
             </div>
           </div>
 
-          <div className="space-y-4 rounded-[1.75rem] border border-[var(--color-borde)] bg-[rgba(255,255,255,0.92)] p-5 shadow-[0_16px_40px_rgba(12,37,46,0.05)]">
+          <div className="tarjeta-operativa space-y-2.5">
             <div className="flex items-center justify-between gap-3">
               <p className={estadoGlobal.clase}>{estadoGlobal.etiqueta}</p>
               <p className="titulo-bloque text-[var(--color-texto)]">{estado?.porcentaje ?? 0}%</p>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <p className="titulo-bloque text-[var(--color-texto)]">{estadoGlobal.titulo}</p>
               <p className="texto-cuerpo texto-suave">{estadoGlobal.descripcion}</p>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="sobrelinea-ui flex items-center justify-between text-[var(--color-texto-suave)]">
                 <span>Avance general</span>
                 <span>{estado?.porcentaje ?? 0}%</span>
@@ -348,15 +348,15 @@ export function PaginaImportacionCliente() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl bg-[rgba(248,250,251,0.85)] px-4 py-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="tarjeta-operativa-suave">
                 <p className="sobrelinea-ui text-[var(--color-texto-suave)]">Etapa actual</p>
                 <p className="mt-1 texto-cuerpo text-[var(--color-texto)]">
                   {estado?.etapa_actual ?? "Esperando el inicio del proceso."}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-[rgba(248,250,251,0.85)] px-4 py-3">
+              <div className="tarjeta-operativa-suave">
                 <p className="sobrelinea-ui text-[var(--color-texto-suave)]">Cierre del proceso</p>
                 <p className="mt-1 texto-cuerpo text-[var(--color-texto)]">
                   {fechaFinalizacion ?? "Se mostrará cuando la importación termine."}
@@ -373,7 +373,7 @@ export function PaginaImportacionCliente() {
         ) : null}
       </section>
 
-      <section className="space-y-5 border-b border-[var(--color-borde-suave)] pb-6">
+      <section className="panel-seccion-compacta">
         <div className="space-y-1">
           <p className="titulo-seccion text-[var(--color-acento)]">Recorrido de la importación</p>
           <p className="texto-cuerpo texto-suave">
@@ -381,7 +381,7 @@ export function PaginaImportacionCliente() {
           </p>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-6">
+        <div className="grid gap-2 lg:grid-cols-6">
           {ETAPAS.map((etapa, indice) => {
             const estadoEtapa = obtenerEstadoEtapa(estado, indice, indiceEtapaActual);
 
@@ -390,28 +390,28 @@ export function PaginaImportacionCliente() {
                 key={etapa}
                 className={
                   estadoEtapa === "activa"
-                    ? "rounded-[1.5rem] border border-[rgba(10,158,189,0.22)] bg-[rgba(10,158,189,0.07)] p-4"
+                    ? "rounded-[0.5rem] border border-[rgba(10,158,189,0.22)] bg-[rgba(10,158,189,0.07)] p-3"
                     : estadoEtapa === "completada"
-                      ? "rounded-[1.5rem] border border-[rgba(31,122,79,0.18)] bg-[rgba(31,122,79,0.06)] p-4"
+                      ? "rounded-[0.5rem] border border-[rgba(31,122,79,0.18)] bg-[rgba(31,122,79,0.06)] p-3"
                       : estadoEtapa === "error"
-                        ? "rounded-[1.5rem] border border-[rgba(183,121,31,0.2)] bg-[rgba(183,121,31,0.08)] p-4"
-                        : "rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.74)] p-4"
+                        ? "rounded-[0.5rem] border border-[rgba(183,121,31,0.2)] bg-[rgba(183,121,31,0.08)] p-3"
+                        : "rounded-[0.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.74)] p-3"
                 }
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   {iconoEtapa(estadoEtapa)}
                   <span className="sobrelinea-ui text-[var(--color-texto-suave)]">
                     Paso {indice + 1}
                   </span>
                 </div>
-                <p className="mt-3 texto-cuerpo text-[var(--color-texto)]">{etapa}</p>
+                <p className="mt-1.5 texto-cuerpo text-[var(--color-texto)]">{etapa}</p>
               </div>
             );
           })}
         </div>
       </section>
 
-      <section className="space-y-5">
+      <section className="space-y-3">
         <div className="space-y-1">
           <p className="titulo-seccion text-[var(--color-acento)]">Resultado de la importación</p>
           <p className="texto-cuerpo texto-suave">
@@ -419,31 +419,31 @@ export function PaginaImportacionCliente() {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.8)] p-4">
+        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-5">
+          <div className="tarjeta-operativa-densa">
             <p className="titulo-seccion text-[var(--color-acento)]">Procesados</p>
-            <p className="numero-metrica mt-2 text-[var(--color-texto)]">{estado?.total_procesado ?? 0}</p>
+            <p className="numero-metrica mt-1 text-[var(--color-texto)]">{estado?.total_procesado ?? 0}</p>
           </div>
-          <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.8)] p-4">
+          <div className="tarjeta-operativa-densa">
             <p className="titulo-seccion text-[var(--color-acento)]">Creados</p>
-            <p className="numero-metrica mt-2 text-[var(--color-texto)]">{estado?.creados ?? 0}</p>
+            <p className="numero-metrica mt-1 text-[var(--color-texto)]">{estado?.creados ?? 0}</p>
           </div>
-          <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.8)] p-4">
+          <div className="tarjeta-operativa-densa">
             <p className="titulo-seccion text-[var(--color-acento)]">Actualizados</p>
-            <p className="numero-metrica mt-2 text-[var(--color-texto)]">{estado?.actualizados ?? 0}</p>
+            <p className="numero-metrica mt-1 text-[var(--color-texto)]">{estado?.actualizados ?? 0}</p>
           </div>
-          <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.8)] p-4">
+          <div className="tarjeta-operativa-densa">
             <p className="titulo-seccion text-[var(--color-acento)]">Omitidos</p>
-            <p className="numero-metrica mt-2 text-[var(--color-texto)]">{estado?.omitidos ?? 0}</p>
+            <p className="numero-metrica mt-1 text-[var(--color-texto)]">{estado?.omitidos ?? 0}</p>
           </div>
-          <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.8)] p-4">
+          <div className="tarjeta-operativa-densa">
             <p className="titulo-seccion text-[var(--color-acento)]">Errores</p>
-            <p className="numero-metrica mt-2 text-[var(--color-texto)]">{estado?.errores ?? 0}</p>
+            <p className="numero-metrica mt-1 text-[var(--color-texto)]">{estado?.errores ?? 0}</p>
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[rgba(255,255,255,0.86)] p-5">
-          <div className="mb-4">
+        <div className="tarjeta-operativa overflow-x-auto">
+          <div className="mb-3">
             <p className="titulo-seccion text-[var(--color-acento)]">Detalle por dominio</p>
           </div>
 
@@ -481,9 +481,9 @@ export function PaginaImportacionCliente() {
         </div>
 
         {estado?.advertencias.length ? (
-          <div className="rounded-[1.5rem] border border-[rgba(183,121,31,0.18)] bg-[rgba(183,121,31,0.07)] p-5">
+          <div className="rounded-[0.5rem] border border-[rgba(183,121,31,0.18)] bg-[rgba(183,121,31,0.07)] p-4">
             <p className="titulo-seccion text-[var(--color-alerta)]">Observaciones</p>
-            <ul className="mt-3 space-y-2 texto-ayuda">
+            <ul className="mt-2 space-y-1 texto-ayuda">
               {estado.advertencias.slice(0, 8).map((advertencia) => (
                 <li key={advertencia}>{advertencia}</li>
               ))}

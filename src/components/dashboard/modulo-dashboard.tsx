@@ -69,8 +69,8 @@ export function ModuloDashboard() {
 
   if (cargando || (sesionLista && cargandoDatos)) {
     return (
-      <div className="space-y-8">
-        <div className="superficie rounded-[1.75rem] p-6">
+      <div className="space-y-5">
+        <div className="superficie rounded-[0.5rem] p-4">
           <p className="texto-cuerpo texto-suave">Cargando información del panel.</p>
         </div>
       </div>
@@ -79,8 +79,8 @@ export function ModuloDashboard() {
 
   if (!sesionLista) {
     return (
-      <div className="space-y-8">
-        <div className="superficie rounded-[1.75rem] p-6">
+      <div className="space-y-5">
+        <div className="superficie rounded-[0.5rem] p-4">
           <p className="texto-cuerpo text-[var(--color-peligro)]">
             Inicia sesión nuevamente para cargar el panel.
           </p>
@@ -91,8 +91,8 @@ export function ModuloDashboard() {
 
   if (!dashboard) {
     return (
-      <div className="space-y-8">
-        <div className="superficie rounded-[1.75rem] p-6">
+      <div className="space-y-5">
+        <div className="superficie rounded-[0.5rem] p-4">
           <p className="texto-cuerpo text-[var(--color-peligro)]">
             {mensajeError ?? "No fue posible obtener el dashboard en este momento."}
           </p>
@@ -105,37 +105,37 @@ export function ModuloDashboard() {
   const distributivo = dashboard.distributivo_docente;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {resumen ? (
         <section className="rejilla-datos">
-          <div className="space-y-6">
-            <div className="superficie rounded-[1.75rem] p-6">
+          <div className="space-y-3">
+            <div className="superficie rounded-[0.5rem] p-4">
               <p className="titulo-seccion text-[var(--color-acento)]">
                 Resumen operativo
               </p>
-              <div className="mt-5 grid gap-4 md:grid-cols-3">
-                <div>
+              <div className="rejilla-metricas-compacta mt-3">
+                <div className="tarjeta-operativa-suave">
                   <p className="texto-ayuda">Periodo activo</p>
-                  <p className="mt-2 titulo-bloque">{resumen.periodo_activo}</p>
+                  <p className="mt-1 titulo-bloque">{resumen.periodo_activo}</p>
                 </div>
-                <div>
+                <div className="tarjeta-operativa-suave">
                   <p className="texto-ayuda">Docentes cargados</p>
-                  <p className="mt-2 numero-metrica">{resumen.docentes}</p>
+                  <p className="mt-1 numero-metrica">{resumen.docentes}</p>
                 </div>
-                <div>
+                <div className="tarjeta-operativa-suave">
                   <p className="texto-ayuda">Estudiantes cargados</p>
-                  <p className="mt-2 numero-metrica">{resumen.estudiantes}</p>
+                  <p className="mt-1 numero-metrica">{resumen.estudiantes}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <aside className="space-y-6">
-            <div className="superficie rounded-[1.75rem] p-6">
+          <aside className="space-y-3">
+            <div className="superficie rounded-[0.5rem] p-4">
               <p className="titulo-seccion text-[var(--color-acento)]">
                 Resumen administrativo
               </p>
-              <div className="mt-4 space-y-2">
+              <div className="mt-2.5 space-y-1">
                 <p className="texto-ayuda">Solicitudes pendientes: {resumen.solicitudes_pendientes}</p>
                 <p className="texto-ayuda">Rol visible: admin</p>
               </div>
@@ -146,32 +146,32 @@ export function ModuloDashboard() {
       ) : null}
 
       {distributivo ? (
-        <section className="space-y-4 pt-2">
-          <div className="space-y-2">
+        <section className="space-y-2.5 pt-1">
+          <div className="space-y-1">
             <p className="titulo-seccion text-[var(--color-acento)]">
               Mi distributivo de trabajo
             </p>
             <p className="texto-cuerpo texto-suave">{distributivo.nombre}</p>
           </div>
 
-          <div className="superficie rounded-[1.75rem] p-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div>
+          <div className="superficie rounded-[0.5rem] p-4">
+            <div className="rejilla-metricas-compacta">
+              <div className="tarjeta-operativa-suave">
                 <p className="texto-ayuda">Docente</p>
-                <p className="mt-2 titulo-bloque">{distributivo.docente_id}</p>
+                <p className="mt-1 titulo-bloque">{distributivo.docente_id}</p>
               </div>
-              <div>
+              <div className="tarjeta-operativa-suave">
                 <p className="texto-ayuda">Asignaciones</p>
-                <p className="mt-2 numero-metrica">{distributivo.total_asignaciones}</p>
+                <p className="mt-1 numero-metrica">{distributivo.total_asignaciones}</p>
               </div>
-              <div>
+              <div className="tarjeta-operativa-suave">
                 <p className="texto-ayuda">Horas asignadas</p>
-                <p className="mt-2 numero-metrica">{distributivo.total_horas}</p>
+                <p className="mt-1 numero-metrica">{distributivo.total_horas}</p>
               </div>
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="tarjeta-operativa overflow-x-auto">
             <table className="tabla-editorial min-w-full">
               <thead>
                 <tr>

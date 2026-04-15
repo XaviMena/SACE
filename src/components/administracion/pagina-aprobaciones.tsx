@@ -117,18 +117,18 @@ export function PaginaAprobacionesCliente() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <EncabezadoPagina
         titulo="Aprobaciones docentes"
         descripcion="Revisa las solicitudes docentes y decide cuándo habilitar su acceso al sistema."
       />
 
-      <section className="space-y-4 border-b border-[var(--color-borde-suave)] pb-6">
-        <div>
+      <section className="panel-seccion-compacta">
+        <div className="tarjeta-operativa-suave">
           <p className="titulo-seccion text-[var(--color-acento)]">
             Solicitudes pendientes
           </p>
-          <p className="numero-metrica mt-2 text-[var(--color-texto)]">{solicitudesPendientes.length}</p>
+          <p className="numero-metrica mt-1 text-[var(--color-texto)]">{solicitudesPendientes.length}</p>
         </div>
 
         {mensaje ? (
@@ -138,7 +138,8 @@ export function PaginaAprobacionesCliente() {
         ) : null}
       </section>
 
-      <section className="overflow-x-auto border-b border-[var(--color-borde-suave)] pb-6">
+      <section className="panel-seccion-compacta">
+        <div className="tarjeta-operativa overflow-x-auto">
         <table className="tabla-editorial min-w-full">
           <thead>
             <tr>
@@ -163,12 +164,13 @@ export function PaginaAprobacionesCliente() {
                 <td>{solicitud.correo}</td>
                 <td>{formatear_fecha(solicitud.ultimo_acceso)}</td>
                 <td>
-                  <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-1">
                     <Boton
                       type="button"
                       variante="fantasma"
                       onClick={() => resolverAccion(solicitud.solicitud_id, "eliminar")}
                       disabled={estaPendiente && uidSeleccionado === solicitud.solicitud_id}
+                      className="px-2"
                     >
                       <Trash2 className="mr-2 size-4" />
                       Eliminar
@@ -178,6 +180,7 @@ export function PaginaAprobacionesCliente() {
                       variante="fantasma"
                       onClick={() => resolverAccion(solicitud.solicitud_id, "bloquear")}
                       disabled={estaPendiente && uidSeleccionado === solicitud.solicitud_id}
+                      className="px-2"
                     >
                       <ShieldOff className="mr-2 size-4" />
                       Bloquear
@@ -186,6 +189,7 @@ export function PaginaAprobacionesCliente() {
                       type="button"
                       onClick={() => resolverAccion(solicitud.solicitud_id, "aprobar")}
                       disabled={estaPendiente && uidSeleccionado === solicitud.solicitud_id}
+                      className="px-2"
                     >
                       <ShieldCheck className="mr-2 size-4" />
                       Aprobar
@@ -204,13 +208,15 @@ export function PaginaAprobacionesCliente() {
             ) : null}
           </tbody>
         </table>
+        </div>
       </section>
 
-      <section className="overflow-x-auto border-b border-[var(--color-borde-suave)] pb-6">
-        <div className="mb-4">
+      <section className="panel-seccion-compacta">
+        <div className="mb-1">
           <p className="titulo-seccion text-[var(--color-acento)]">Docentes aprobados</p>
         </div>
 
+        <div className="tarjeta-operativa overflow-x-auto">
         <table className="tabla-editorial min-w-full">
           <thead>
             <tr>
@@ -234,7 +240,7 @@ export function PaginaAprobacionesCliente() {
                 <td>{solicitud.correo}</td>
                 <td>{formatear_fecha(solicitud.ultimo_acceso)}</td>
                 <td>
-                  <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-1">
                     <Boton
                       type="button"
                       variante="fantasma"
@@ -243,6 +249,7 @@ export function PaginaAprobacionesCliente() {
                         solicitud.uid === usuario?.uid ||
                         (estaPendiente && uidSeleccionado === solicitud.solicitud_id)
                       }
+                      className="px-2"
                     >
                       <RotateCcw className="mr-2 size-4" />
                       Revocar aprobación
@@ -260,6 +267,7 @@ export function PaginaAprobacionesCliente() {
             ) : null}
           </tbody>
         </table>
+        </div>
       </section>
     </div>
   );

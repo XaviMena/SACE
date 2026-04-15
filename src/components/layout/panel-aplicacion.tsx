@@ -59,7 +59,7 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
   const DashboardIcono = dashboard?.icono;
 
   const clasesItemMenu =
-    "flex items-center gap-2.5 rounded-[0.95rem] px-3 py-2 text-[var(--tamano-ui)] font-medium transition";
+    "nav-item-compacto flex items-center gap-2 text-[var(--tamano-ui)] font-medium transition";
 
   if (cargando) {
     return (
@@ -121,16 +121,16 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen md:grid md:grid-cols-[228px_minmax(0,1fr)]">
-      <aside className="panel-lateral flex flex-col gap-5 px-4 py-4 md:sticky md:top-0 md:h-screen md:overflow-hidden md:px-4 md:py-5">
-        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
-          <div className="space-y-3">
-            <div className="inline-flex w-fit max-w-full items-center gap-2 px-1 py-1">
+      <aside className="panel-lateral flex flex-col gap-3 px-3 py-3 md:sticky md:top-0 md:h-screen md:overflow-hidden md:px-3 md:py-3">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
+          <div className="space-y-2">
+            <div className="inline-flex w-fit max-w-full items-center gap-2 px-0.5 py-0.5">
               <ShieldCheck className="size-4 text-[var(--color-acento)]" />
               <span className="text-[var(--tamano-ui)] font-medium text-[var(--color-acento)]">SACE</span>
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {dashboard && dashboard.href ? (
               <nav className="space-y-0.5">
                 {DashboardIcono ? (
@@ -139,9 +139,10 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
                     href={dashboard.href}
                     className={cn(
                       clasesItemMenu,
+                      "nav-item-activo",
                       ruta_esta_activa(pathname, dashboard.href)
-                        ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
-                        : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                        ? ""
+                        : "nav-item-inactivo bg-transparent shadow-none",
                     )}
                   >
                     <DashboardIcono className="size-3.5" />
@@ -152,20 +153,20 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
             ) : null}
 
             {gruposVisibles.length ? (
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {gruposVisibles.map((grupo) => {
                   const grupoActivo = grupo.items.some((item) => ruta_esta_activa(pathname, item.href));
                   const abierta = gruposAbiertos[grupo.id] ?? grupoActivo;
 
                   return (
-                    <div key={grupo.id} className="space-y-1">
+                    <div key={grupo.id} className="nav-grupo-compacto">
                       <button
                         type="button"
                         className={cn(
-                          "flex w-full items-center justify-between rounded-[0.95rem] px-3 pt-3 pb-2 text-left text-[var(--tamano-ui)] font-medium transition",
+                          "nav-toggle-compacto flex w-full items-center justify-between text-left text-[var(--tamano-ui)] font-medium transition",
                           grupoActivo
                             ? "text-[var(--color-texto)]"
-                            : "text-[var(--color-texto-suave)] hover:text-[var(--color-texto)]",
+                            : "text-[var(--color-texto-suave)] hover:bg-white/0 hover:text-[var(--color-texto)]",
                         )}
                         onClick={() =>
                           setGruposAbiertos((actual) => ({
@@ -203,7 +204,7 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
                                   key={`${grupo.id}-${item.etiqueta}`}
                                   className={cn(
                                     clasesItemMenu,
-                                    "cursor-default text-[var(--color-texto-suave)] opacity-70",
+                                    "nav-item-bloqueado",
                                   )}
                                   aria-disabled="true"
                                 >
@@ -218,9 +219,10 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
                                 href={item.href}
                                 className={cn(
                                   clasesItemMenu,
+                                  "nav-item-activo",
                                   seleccionada
-                                    ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
-                                    : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                                    ? ""
+                                    : "nav-item-inactivo bg-transparent shadow-none",
                                 )}
                               >
                                 {contenido}
@@ -236,8 +238,8 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
             ) : null}
 
             {itemsPersonales.length ? (
-              <div className="space-y-2 border-t border-[var(--color-borde-suave)] pt-4">
-                <p className="px-3 text-[var(--tamano-ui)] font-medium text-[var(--color-texto-suave)]">
+              <div className="space-y-1 border-t border-[var(--color-borde-suave)] pt-2.5">
+                <p className="px-2 text-[var(--tamano-ui)] font-medium text-[var(--color-texto-suave)]">
                   Mi cuenta
                 </p>
                 <nav className="space-y-0.5">
@@ -254,9 +256,10 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
                         href={item.href}
                         className={cn(
                           clasesItemMenu,
+                          "nav-item-activo",
                           seleccionada
-                            ? "bg-white/85 text-[var(--color-texto)] shadow-[0_8px_24px_rgba(20,34,46,0.05)]"
-                            : "text-[var(--color-texto-suave)] hover:bg-white/60 hover:text-[var(--color-texto)]",
+                            ? ""
+                            : "nav-item-inactivo bg-transparent shadow-none",
                         )}
                       >
                         <Activo className="size-3.5" />
@@ -270,9 +273,9 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <div className="mt-auto space-y-3 px-3 pb-1">
-          <div className="flex items-start gap-2.5">
-            <div className="mt-0.5 rounded-full bg-[rgba(27,97,118,0.1)] p-2 text-[var(--color-acento)]">
+        <div className="mt-auto space-y-1.5 px-2 pb-1">
+          <div className="tarjeta-usuario flex items-start gap-2 px-0.5 py-1">
+            <div className="mt-0.5 rounded-full bg-[rgba(27,97,118,0.08)] p-1.5 text-[var(--color-acento)]">
               <GraduationCap className="size-3.5" />
             </div>
             <div className="min-w-0 space-y-1">
@@ -289,7 +292,7 @@ export function PanelAplicacion({ children }: { children: React.ReactNode }) {
           </div>
 
           <Boton
-            className="w-full justify-start rounded-[0.95rem] px-3 py-2"
+            className="w-full justify-start px-0.5 text-[var(--color-acento)] hover:bg-transparent"
             variante="fantasma"
             type="button"
             onClick={cerrarSesionActual}

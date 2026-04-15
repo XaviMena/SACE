@@ -80,16 +80,16 @@ export function ModuloClaveAcceso() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5">
       <EncabezadoPagina
         titulo="Cambiar clave de acceso"
         descripcion="Actualiza tu clave para ingresar al sistema con mayor seguridad."
       />
 
-      <section className="max-w-2xl space-y-5">
-        <div className="rounded-[1.5rem] border border-[var(--color-borde-suave)] bg-[var(--color-superficie-secundaria)] p-5">
+      <section className="max-w-2xl space-y-4">
+        <div className="tarjeta-operativa-suave">
           <div className="flex items-start gap-3">
-            <div className="rounded-full bg-[rgba(27,97,118,0.1)] p-2 text-[var(--color-acento)]">
+            <div className="rounded-[0.5rem] bg-[rgba(27,97,118,0.1)] p-2 text-[var(--color-acento)]">
               <LockKeyhole className="size-4" />
             </div>
             <div className="space-y-1">
@@ -101,8 +101,8 @@ export function ModuloClaveAcceso() {
           </div>
         </div>
 
-        <form className="space-y-5" onSubmit={onSubmit}>
-          <div className="grid gap-4">
+        <form className="space-y-4" onSubmit={onSubmit}>
+          <div className="grid gap-3">
             <Campo
               etiqueta="Clave anterior"
               id="clave_actual"
@@ -131,13 +131,13 @@ export function ModuloClaveAcceso() {
           </div>
 
           {mensaje ? (
-            <div className="rounded-2xl border border-[rgba(31,122,79,0.16)] bg-[rgba(31,122,79,0.08)] px-4 py-3 text-[var(--tamano-ui)] text-[var(--color-exito)]">
+            <div className="rounded-[0.5rem] border border-[rgba(31,122,79,0.16)] bg-[rgba(31,122,79,0.08)] px-3 py-2.5 text-[var(--tamano-ui)] text-[var(--color-exito)]">
               {mensaje}
             </div>
           ) : null}
 
           {mensajeError ? (
-            <div className="rounded-2xl border border-[rgba(181,66,45,0.14)] bg-[rgba(181,66,45,0.07)] px-4 py-3 text-[var(--tamano-ui)] text-[var(--color-peligro)]">
+            <div className="rounded-[0.5rem] border border-[rgba(181,66,45,0.14)] bg-[rgba(181,66,45,0.07)] px-3 py-2.5 text-[var(--tamano-ui)] text-[var(--color-peligro)]">
               {mensajeError}
             </div>
           ) : null}
